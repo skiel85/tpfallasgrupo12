@@ -1,10 +1,10 @@
 #created on: 11/04/2009
-package com.fiuba.fallas.futbol;
+#package com.fiuba.fallas.futbol;
 
 #list any import classes here.
-import com.fiuba.fallas.futbol.Jugador
-import com.fiuba.fallas.futbol.Main
-import com.fiuba.fallas.futbol.PosicionPosible
+#import com.fiuba.fallas.futbol.Jugador
+#import com.fiuba.fallas.futbol.Main
+#import com.fiuba.fallas.futbol.PosicionPosible
 
 /** R01
 * Al tener menos de 7 en el atributo atajando, descarto la posibilidad de que sea arquero

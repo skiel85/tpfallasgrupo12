@@ -1,27 +1,28 @@
-package com.fiuba.fallas.futbol;
+
+
 
 public class PosicionPosible {
-	private int idJugador;
-	private String posicion;
+	private int idMaquina;
+	private String estado;
 	
-	public int getIdJugador() {
-		return idJugador;
+	public int getIdMaquina() {
+		return idMaquina;
 	}
 	
-	public void setIdJugador(int idJugador) {
-		this.idJugador = idJugador;
+	public void setIdMaquina(int idMaquina) {
+		this.idMaquina = idMaquina;
 	}
 	
 	public String getPosicion() {
-		return posicion;
+		return estado;
 	}
 	
-	public void setPosicion(String posicion) {
-		this.posicion = posicion;
+	public void setPosicion(String estado) {
+		this.estado = estado;
 	}
 	
-	public PosicionPosible(int idJugador, String posicion) {
-		this.idJugador = idJugador;
-		this.posicion = posicion;
+	public PosicionPosible(int idMaquina, String estado) {
+		this.idMaquina = idMaquina;
+		this.estado = estado;
 	}
 }

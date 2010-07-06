@@ -1,5 +1,5 @@
 
-public class Jugador {
+public class Maquina {
 	private int id;
 	private String nombre;
 	
@@ -15,7 +15,7 @@ public class Jugador {
 	
 	private String estado;
 	
-	public Jugador(int id, String nombre, int costoMP, int velocidad, int resistencia,
+	public Maquina(int id, String nombre, int costoMP, int velocidad, int resistencia,
 			int CostoMO, int amortizacion, int duracion, int capacitacion, int mantenimiento,
 			int experiencia) {
 		super();

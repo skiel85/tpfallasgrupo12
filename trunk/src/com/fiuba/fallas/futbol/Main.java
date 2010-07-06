@@ -1,4 +1,4 @@
-package com.fiuba.fallas.futbol;
+
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -56,36 +56,36 @@ public class Main {
 	private JButton solveButton = new JButton("Procesar");
 	private JFileChooser fileChooser;
 	private JTextArea textArea;
-	private ArrayList<Jugador> jugadores;
+	private ArrayList<Maquina> maquinas;
 	private JTable table;
 	private Object[][] data;
 	
 	public Main() {
 
-		jugadores = fillArray();
+		maquinas = fillArray();
 
-		mainFrame = new JFrame("Selección de Jugadores");
+		mainFrame = new JFrame("Selecci�n de maquinas");
 
 		data = new Object[11][11];
-		Jugador ju;
-		for (int j = 0; j < jugadores.size(); j++) {
-			ju = jugadores.get(j);
+		Maquina ju;
+		for (int j = 0; j < maquinas.size(); j++) {
+			ju = maquinas.get(j);
 
 			data[j][0] = ju.getNombre();
-			data[j][1] = Integer.toString(ju.getAtajando());
+			data[j][1] = Integer.toString(ju.getcosto());
 			data[j][2] = Integer.toString(ju.getVelocidad());
 			data[j][3] = Integer.toString(ju.getResistencia());
-			data[j][4] = Integer.toString(ju.getQuite());
-			data[j][5] = Integer.toString(ju.getPases());
-			data[j][6] = Integer.toString(ju.getCentros());
-			data[j][7] = Integer.toString(ju.getCabeza());
-			data[j][8] = Integer.toString(ju.getDefinicion());
+			data[j][4] = Integer.toString(ju.getcostoMO());
+			data[j][5] = Integer.toString(ju.getamortizacion());
+			data[j][6] = Integer.toString(ju.getduracion());
+			data[j][7] = Integer.toString(ju.getcapacitacion());
+			data[j][8] = Integer.toString(ju.getmantenimiento());
 			data[j][9] = Integer.toString(ju.getExperiencia());
 			data[j][10] = "No Definida";
 		}
 
-		String[] columnNames = { "Nombre", "Ata", "Vel", "Res", "Qui", "Pas",
-				"Cen", "Cab", "Def", "Exp", "Posición" };
+		String[] columnNames = { "Nombre", "Cos", "Vel", "Res", "CMO", "Amo",
+				"Dur", "Cab", "Def", "Exp", "Estado" };
 
 		// se crea la Tabla
 		textArea= new JTextArea(7,50);
@@ -167,13 +167,13 @@ public class Main {
 					.newFileLogger(ksession, "test");
 
 			long startTime = System.currentTimeMillis();
-			Jugador jug;
-			int lim =jugadores.size();
+			Maquina jug;
+			int lim =maquinas.size();
 			
-			jugadores.clear();
+			maquinas.clear();
 			
 			for (int k = 0; k < lim; k++) {
-				jug = new Jugador(k,
+				jug = new Maquina(k,
 						(String) table.getModel().getValueAt(k, 0), (Integer
 								.parseInt((String) table.getModel().getValueAt(
 										k, 1))), (Integer
@@ -193,7 +193,7 @@ public class Main {
 										k, 8))), (Integer
 								.parseInt((String) table.getModel().getValueAt(
 										k, 9))));
-				jugadores.add(jug);
+				maquinas.add(jug);
 				ksession.insert(jug);
 			}
 
@@ -227,9 +227,9 @@ public class Main {
 	}
 
 	private void updatePosicion() {
-		for (int i = 0 ; i< jugadores.size();i++){
-			//System.out.println("Final ("+jugadores.get(0).getNombre()+")-> posicion: " + jugadores.get(0).getPosicion());
-			data[i][10] = jugadores.get(i).getPosicion();
+		for (int i = 0 ; i< maquinas.size();i++){
+			//System.out.println("Final ("+maquinas.get(0).getNombre()+")-> posicion: " + maquinas.get(0).getPosicion());
+			data[i][10] = maquinas.get(i).getestado();
 			table.updateUI();
 			
 		}
@@ -243,8 +243,7 @@ public class Main {
 	}
 
 	private static KnowledgeBase readKnowledgeBase() throws Exception {
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
-				.newKnowledgeBuilder();
+		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		kbuilder.add(
 				ResourceFactory.newClassPathResource("ElegirPosicion.drl"),
 				ResourceType.DRL);
@@ -260,13 +259,14 @@ public class Main {
 		return kbase;
 	}
 
-	private ArrayList<Jugador> fillArray() {
+	private ArrayList<Maquina> fillArray() {
 		System.out.println("Cargando file...\n");
 	    
 	    try {
 	      //use buffering, reading one line at a time
 	      //FileReader always assumes default encoding is OK!
-	      BufferedReader input =  new BufferedReader(new FileReader(new File("C:\\Users\\Nico\\Workspace\\TPFallasI\\src\\com\\fiuba\\fallas\\futbol\\a.txt")));
+	      //BufferedReader input =  new BufferedReader(new FileReader(new File("C:\\Users\\Nico\\Workspace\\TPFallasI\\src\\com\\fiuba\\fallas\\futbol\\a.txt")));
+	    	BufferedReader input =  new BufferedReader(new FileReader(new File("C:\\Documents and Settings\\Administrador\\Escritorio\\eclipse\\workspace\\tpfallas\\src\\a.txt")));
 	      try {
 	        String line = null; //not declared within while loop
 	       // line.
@@ -291,32 +291,32 @@ public class Main {
 	    }
 
 		
-		
-		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-		Jugador jugador = new Jugador(1, "Juan Carlos", 6, 5, 2, 5, 7, 6, 2, 3,
+		// ACA PONER NOMBRES DE MAQUINAS!!!!!
+		ArrayList<Maquina> maquinas = new ArrayList<Maquina>();
+		Maquina Maquina = new Maquina(1, "Maquina0", 6, 5, 2, 5, 7, 6, 2, 3,
 				4);
-		jugadores.add(jugador);
-		jugador = new Jugador(2, "Roberto", 9, 6, 4, 10, 3, 5, 6, 4, 2);
-		jugadores.add(jugador);
-		jugador = new Jugador(3, "Alberto", 2, 5, 5, 9, 4, 5, 8, 4, 2);
-		jugadores.add(jugador);
-		jugador = new Jugador(4, "Osvaldo", 4, 6, 3, 6, 5, 5, 7, 2, 1);
-		jugadores.add(jugador);
-		jugador = new Jugador(5, "Romualdo", 5, 4, 7, 3, 6, 6, 7, 5, 4);
-		jugadores.add(jugador);
-		jugador = new Jugador(6, "Luis", 2, 6, 6, 2, 5, 4, 8, 6, 3);
-		jugadores.add(jugador);
-		jugador = new Jugador(7, "Nelson", 1, 7, 6, 5, 7, 6, 2, 7, 5);
-		jugadores.add(jugador);
-		jugador = new Jugador(8, "Andres", 0, 8, 7, 6, 8, 5, 5, 8, 4);
-		jugadores.add(jugador);
-		jugador = new Jugador(9, "Javier", 2, 6, 4, 7, 6, 4, 6, 6, 2);
-		jugadores.add(jugador);
-		jugador = new Jugador(10, "Ernesto", 4, 8, 8, 3, 7, 4, 7, 9, 3);
-		jugadores.add(jugador);
-		jugador = new Jugador(11, "Tomás", 0, 9, 7, 1, 6, 6, 5, 8, 6);
-		jugadores.add(jugador);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(2, "Maquina1", 9, 6, 4, 10, 3, 5, 6, 4, 2);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(3, "Maquina2", 2, 5, 5, 9, 4, 5, 8, 4, 2);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(4, "Maquina3", 4, 6, 3, 6, 5, 5, 7, 2, 1);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(5, "Maquina4", 5, 4, 7, 3, 6, 6, 7, 5, 4);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(6, "Maquina5", 2, 6, 6, 2, 5, 4, 8, 6, 3);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(7, "Maquina6", 1, 7, 6, 5, 7, 6, 2, 7, 5);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(8, "Maquina7", 0, 8, 7, 6, 8, 5, 5, 8, 4);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(9, "Maquina8", 2, 6, 4, 7, 6, 4, 6, 6, 2);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(10, "Maquina9", 4, 8, 8, 3, 7, 4, 7, 9, 3);
+		maquinas.add(Maquina);
+		Maquina = new Maquina(11, "Maquina10", 0, 9, 7, 1, 6, 6, 5, 8, 6);
+		maquinas.add(Maquina);
 
-		return jugadores;
+		return maquinas;
 	}
 }
