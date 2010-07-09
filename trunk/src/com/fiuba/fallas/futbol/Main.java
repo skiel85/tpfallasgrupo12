@@ -34,21 +34,21 @@ import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
+
 public class Main {
 	private static String log;
 	private JFrame mainFrame;
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("Archivo");
-	private JMenuItem openMenuItem = new JMenuItem("Abrir...");
-	
+	private JMenuItem openMenuItem = new JMenuItem("Abreiendo la Aplicacion");
 	public static String getLog() {
 		return log;
 	}
-
+	
 	public static void setLog(String log) {
 		Main.log = log;
 	}
-
+	
 	private JMenuItem exitMenuItem = new JMenuItem("Salir");
 	private BorderLayout borderLayout = new BorderLayout();
 	private FlowLayout flowLayout = new FlowLayout(FlowLayout.RIGHT);
@@ -61,31 +61,28 @@ public class Main {
 	private Object[][] data;
 	
 	public Main() {
-
 		maquinas = fillArray();
-
 		mainFrame = new JFrame("Selección de maquinas");
 
 		data = new Object[11][11];
-		Maquina ju;
+		Maquina maquina;
 		for (int j = 0; j < maquinas.size(); j++) {
-			ju = maquinas.get(j);
-
-			data[j][0] = ju.getNombre();
-			data[j][1] = Integer.toString(ju.getcosto());
-			data[j][2] = Integer.toString(ju.getVelocidad());
-			data[j][3] = Integer.toString(ju.getResistencia());
-			data[j][4] = Integer.toString(ju.getcostoMO());
-			data[j][5] = Integer.toString(ju.getamortizacion());
-			data[j][6] = Integer.toString(ju.getduracion());
-			data[j][7] = Integer.toString(ju.getcapacitacion());
-			data[j][8] = Integer.toString(ju.getmantenimiento());
-			data[j][9] = Integer.toString(ju.getExperiencia());
+			maquina = maquinas.get(j);
+			data[j][0] = maquina.getNombre();
+			data[j][1] = Integer.toString(maquina.getcosto());
+			data[j][2] = Integer.toString(maquina.getVelocidad());
+			data[j][3] = Integer.toString(maquina.getResistencia());
+			data[j][4] = Integer.toString(maquina.getcostoMO());
+			data[j][5] = Integer.toString(maquina.getamortizacion());
+			data[j][6] = Integer.toString(maquina.getduracion());
+			data[j][7] = Integer.toString(maquina.getcapacitacion());
+			data[j][8] = Integer.toString(maquina.getmantenimiento());
+			data[j][9] = Integer.toString(maquina.getExperiencia());
 			data[j][10] = "No Definida";
 		}
 
-		String[] columnNames = { "Nombre", "Cos", "Vel", "Res", "CMO", "Amo",
-				"Dur", "Cab", "Def", "Exp", "Estado" };
+		String[] columnNames = { "terminal de Trabajo", "Costo", "Velocidad", "Resistencia", "CostoMO", "Amortizacion",
+				"Duracion", "Capacitacion", "Def", "Experiencia", "Estado" };
 
 		// se crea la Tabla
 		textArea= new JTextArea(7,50);
@@ -107,27 +104,25 @@ public class Main {
 		mainFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		mainFrame.getContentPane().add(scrollPane2,BorderLayout.SOUTH);
 		mainFrame.pack();
-
-		
+	
 		fileMenu.add(openMenuItem);
 		openMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 if (fileChooser == null)
-		         {
-		            fileChooser = new JFileChooser();
-		         }
-		         
-			       try
-			         {
-			            if (fileChooser.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION)
-			            {
-			               System.out.println(fileChooser.getSelectedFile().getCanonicalPath());
-			            }
-			         }
-			         catch (IOException ex)
-			         {
-			            ex.printStackTrace();
-			         }
+			if (fileChooser == null)
+		    {
+		      fileChooser = new JFileChooser();
+		    }		         
+			try
+			{
+			  if (fileChooser.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION)
+			  {
+			    System.out.println(fileChooser.getSelectedFile().getCanonicalPath());
+			  }
+			 }
+			 catch (IOException ex)
+			 {
+			   ex.printStackTrace();
+			  }
 			}
 		});
 		exitMenuItem.addActionListener(new ActionListener() {
@@ -144,7 +139,7 @@ public class Main {
 		buttonPanel.add(solveButton);
 		solveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				solveButton.setText("Procesando");
+				solveButton.setText("Procesar");
 				solveButton.setEnabled(false);
 				cargaBase();
 			}
@@ -159,54 +154,32 @@ public class Main {
 	private void cargaBase() {
 		// load up the knowledge base
 		try {
-
 			KnowledgeBase kbase = readKnowledgeBase();
-			StatefulKnowledgeSession ksession = kbase
-					.newStatefulKnowledgeSession();
-			KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory
-					.newFileLogger(ksession, "test");
-
+			StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
+			KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "test");
 			long startTime = System.currentTimeMillis();
-			Maquina jug;
+			Maquina maquina;
 			int lim =maquinas.size();
-			
 			maquinas.clear();
-			
+
 			for (int k = 0; k < lim; k++) {
-				jug = new Maquina(k,
-						(String) table.getModel().getValueAt(k, 0), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 1))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 2))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 3))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 4))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 5))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 6))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 7))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 8))), (Integer
-								.parseInt((String) table.getModel().getValueAt(
-										k, 9))));
-				maquinas.add(jug);
-				ksession.insert(jug);
+			maquina = new Maquina(k,
+			(String) table.getModel().getValueAt(k, 0), (Integer.parseInt((String) 
+					table.getModel().getValueAt(k, 1))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 2))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 3))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 4))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 5))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 6))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 7))), (Integer.parseInt((String) table.getModel().getValueAt(
+					k, 8))), (Integer.parseInt((String) table.getModel().getValueAt(k, 9))));
+				maquinas.add(maquina);
+				ksession.insert(maquina);
 			}
 
 			PosicionPosible pp;
-
 			for (int i = 0; i < 11; i++) {
-				pp = new PosicionPosible(i, "Arquero");
-				ksession.insert(pp);
-				pp = new PosicionPosible(i, "Defensor");
-				ksession.insert(pp);
-				pp = new PosicionPosible(i, "Volante");
-				ksession.insert(pp);
-				pp = new PosicionPosible(i, "Delantero");
+				pp = new PosicionPosible(i, "Maquina");
 				ksession.insert(pp);
 			}
 			ksession.insert(this);
@@ -215,26 +188,20 @@ public class Main {
 			
 			long endTime = System.currentTimeMillis() - startTime;
 			solveButton.setEnabled(true);
-			solveButton.setText("Procesado (" + Long.toString(endTime)
-					+ " msec )");
+			solveButton.setText("Procesado (" + Long.toString(endTime)+ " msec )");
 			updatePosicion();
-			textArea.append("Procesado (" + Long.toString(endTime)
-					+ " msec) \n");
+			textArea.append("Procesado (" + Long.toString(endTime)+ " msec) \n");
 			
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
-
 	private void updatePosicion() {
 		for (int i = 0 ; i< maquinas.size();i++){
 			//System.out.println("Final ("+maquinas.get(0).getNombre()+")-> posicion: " + maquinas.get(0).getPosicion());
 			data[i][10] = maquinas.get(i).getestado();
-			table.updateUI();
-			
+			table.updateUI();		
 		}
-
-		
 	}
 
 	public static final void main(String[] args) {
@@ -244,9 +211,7 @@ public class Main {
 
 	private static KnowledgeBase readKnowledgeBase() throws Exception {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		kbuilder.add(
-				ResourceFactory.newClassPathResource("ElegirPosicion.drl"),
-				ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("ElegirMaquina.drl"),ResourceType.DRL);
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
 		if (errors.size() > 0) {
 			for (KnowledgeBuilderError error : errors) {
@@ -289,34 +254,30 @@ public class Main {
 	    catch (IOException ex){
 	      ex.printStackTrace();
 	    }
-
-		
 		// ACA PONER NOMBRES DE MAQUINAS!!!!!
 		ArrayList<Maquina> maquinas = new ArrayList<Maquina>();
-		Maquina Maquina = new Maquina(1, "Maquina0", 6, 5, 2, 5, 7, 6, 2, 3,
-				4);
+		Maquina Maquina = new Maquina(1, "Maquina Sebastian", 6, 5, 2, 5, 7, 6, 2, 3,4);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(2, "Maquina1", 9, 6, 4, 10, 3, 5, 6, 4, 2);
+		Maquina = new Maquina(2, "Maquina Nacho", 9, 6, 4, 10, 3, 5, 6, 4, 2);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(3, "Maquina2", 2, 5, 5, 9, 4, 5, 8, 4, 2);
+		Maquina = new Maquina(3, "Maquina Rodolfo", 2, 5, 5, 9, 4, 5, 8, 4, 2);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(4, "Maquina3", 4, 6, 3, 6, 5, 5, 7, 2, 1);
+		Maquina = new Maquina(4, "Maquina Marcos", 4, 6, 3, 6, 5, 5, 7, 2, 1);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(5, "Maquina4", 5, 4, 7, 3, 6, 6, 7, 5, 4);
+		Maquina = new Maquina(5, "Maquina Martin", 5, 4, 7, 3, 6, 6, 7, 5, 4);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(6, "Maquina5", 2, 6, 6, 2, 5, 4, 8, 6, 3);
+		Maquina = new Maquina(6, "Maquina German", 2, 6, 6, 2, 5, 4, 8, 6, 3);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(7, "Maquina6", 1, 7, 6, 5, 7, 6, 2, 7, 5);
+		Maquina = new Maquina(7, "Maquina Roberto", 1, 7, 6, 5, 7, 6, 2, 7, 5);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(8, "Maquina7", 0, 8, 7, 6, 8, 5, 5, 8, 4);
+		Maquina = new Maquina(8, "Maquina Bonifacio", 0, 8, 7, 6, 8, 5, 5, 8, 4);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(9, "Maquina8", 2, 6, 4, 7, 6, 4, 6, 6, 2);
+		Maquina = new Maquina(9, "Maquina Matias", 2, 6, 4, 7, 6, 4, 6, 6, 2);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(10, "Maquina9", 4, 8, 8, 3, 7, 4, 7, 9, 3);
+		Maquina = new Maquina(10, "Maquina Diego Armando", 4, 8, 8, 3, 7, 4, 7, 9, 3);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(11, "Maquina10", 0, 9, 7, 1, 6, 6, 5, 8, 6);
+		Maquina = new Maquina(11, "Maquina Nicolas", 0, 9, 7, 1, 6, 6, 5, 8, 6);
 		maquinas.add(Maquina);
-
 		return maquinas;
 	}
 }

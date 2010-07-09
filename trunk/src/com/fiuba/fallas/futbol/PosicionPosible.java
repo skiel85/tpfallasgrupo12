@@ -1,6 +1,3 @@
-
-
-
 public class PosicionPosible {
 	private int idMaquina;
 	private String estado;
