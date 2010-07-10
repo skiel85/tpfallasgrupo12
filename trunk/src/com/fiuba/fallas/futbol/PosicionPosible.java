@@ -1,3 +1,5 @@
+package com.fiuba.fallas.Cotizador;
+
 public class PosicionPosible {
 	private int idMaquina;
 	private String estado;

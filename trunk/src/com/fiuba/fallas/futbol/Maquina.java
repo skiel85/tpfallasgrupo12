@@ -1,36 +1,44 @@
+package com.fiuba.fallas.Cotizador;
+
 
 public class Maquina {
 	private int id;
 	private String nombre;
-	
 	private int costos;
 	private int velocidad;
-	private int resistencia;
+	private int demoraImpresion;
 	private int costoMO;
-	private int amortizacion;
+	private int disponibilidad;
 	private int duracion;
-	private int capacitacion;
+	private int cantidadColores;
+	// indica de 1 a 10 cuan eficiente es el trabajo en esa maquina
+	private int eficacia;
+	//indica si la maquina esta en condiciones o fuera de servicio, por ejemplo reparacion.
 	private int mantenimiento;
 	private int experiencia;
-	
+	private int MaxHojasImp;
+	//dice si esta ocupada o desocupada ( no es tan real pero al menos son estados posibles.
 	private String estado;
+	//beneficio total de cada maquina.
+	private int beneficios;
 	
-	public Maquina(int id, String nombre, int costoMP, int velocidad, int resistencia,
-			int CostoMO, int amortizacion, int duracion, int capacitacion, int mantenimiento,
-			int experiencia) {
+	public Maquina(int id, String nombre, int costoMP, int velocidad, int demoraImpresion, 
+			int disponibilidad, int duracion, int cantidadColores, int mantenimiento,
+			int experiencia,int MaxHojasImp ) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.costos = costoMP;
 		this.velocidad = velocidad;
-		this.resistencia = resistencia;
-		this.costoMO= costoMO;
-		this.amortizacion = amortizacion;
+		this.demoraImpresion = demoraImpresion;
+		this.disponibilidad = disponibilidad;
 		this.duracion = duracion;
-		this.capacitacion = capacitacion;
+		this.cantidadColores = cantidadColores;
 		this.mantenimiento = mantenimiento;
-		this.experiencia = experiencia;
-		this.estado ="No Definida";
+		this.experiencia =experiencia;
+		this.estado=null;
+		this.beneficios=0;
+		this.MaxHojasImp=MaxHojasImp;
 	}
 
 	public int getcosto() {
@@ -49,30 +57,22 @@ public class Maquina {
 		this.velocidad = velocidad;
 	}
 
-	public int getResistencia() {
-		return resistencia;
+	public int getdemoraImpresion() {
+		return demoraImpresion;
 	}
 
-	public void setResistencia(int resistencia) {
-		this.resistencia = resistencia;
+	public void setdemoraImpresion(int demoraImpresion) {
+		this.demoraImpresion = demoraImpresion;
+	}
+	public int getdisponibilidad() {
+		return disponibilidad;
 	}
 
-	public int getcostoMO() {
-		return costoMO;
+	public void setdisponibilidad(int disponibilidad) {
+		this.disponibilidad = disponibilidad;
 	}
 
-	public void setcostoMO(int costoMO) {
-		this.costoMO = costoMO;
-	}
-
-	public int getamortizacion() {
-		return amortizacion;
-	}
-
-	public void setamortizacion(int amortizacion) {
-		this.amortizacion = amortizacion;
-	}
-
+	//horas operativa de cada una de las maquinas.
 	public int getduracion() {
 		return duracion;
 	}
@@ -105,12 +105,12 @@ public class Maquina {
 		this.nombre = nombre;
 	}
 
-	public int getcapacitacion() {
-		return capacitacion;
+	public int getcantidadColores() {
+		return cantidadColores;
 	}
 
-	public void setcapacitacion(int capacitacion) {
-		this.capacitacion = capacitacion;
+	public void setcantidadColores(int cantidadColores) {
+		this.cantidadColores = cantidadColores;
 	}
 
 	public void setId(int id) {
@@ -120,12 +120,33 @@ public class Maquina {
 	public int getId() {
 		return id;
 	}
+	//usar si es necesario creo qeu en la idea de berta esto eera importante, sino no usar!
+	public void seteficacia(int eficacia) {
+		this.eficacia = eficacia;
+	}
+
+	public int geteficacia() {
+		return eficacia;
+	}
 	
+	public void setMaxHojasImp(int MaxHojasImp) {
+		this.MaxHojasImp = MaxHojasImp;
+	}
+
+	public int getMaxHojasImp() {
+		return this.MaxHojasImp;
+	}
 	public String getestado() {
 		return estado;
 	}
 
 	public void setestado(String estado) {
 		this.estado = estado;
+	}
+	public int getPrecioPapel(){
+		return 100;	
+	}
+	public int getbeneficios() {
+		return this.beneficios=getPrecioPapel()+ getdemoraImpresion() + (getdisponibilidad()*getcosto()) ;
 	}
 }
