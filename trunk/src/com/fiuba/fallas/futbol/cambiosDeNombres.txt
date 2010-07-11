@@ -1,6 +1,0 @@
-atajando -- costo
-Quite -- CostoMO
-pases -- amortizacion
-cabeza -- capacitacion
-posicion -- estado
-centros -- duracion

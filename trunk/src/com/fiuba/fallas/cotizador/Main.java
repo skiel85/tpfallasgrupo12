@@ -1,15 +1,8 @@
-package com.fiuba.fallas.Cotizador;
-
-
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -42,7 +35,7 @@ public class Main {
 	private JFrame mainFrame;
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fileMenu = new JMenu("Archivo");
-	private JMenuItem openMenuItem = new JMenuItem("Abreiendo la Aplicacion");
+	private JMenuItem openMenuItem = new JMenuItem("Abrir..");
 	public static String getLog() {
 		return log;
 	}
@@ -71,34 +64,23 @@ public class Main {
 		for (int j = 0; j < maquinas.size(); j++) {
 			maquina = maquinas.get(j);
 			data[j][0] = maquina.getNombre();
-			data[j][1] = Integer.toString(maquina.getcosto());
-			data[j][2] = Integer.toString(maquina.getVelocidad());
-			data[j][3] = Integer.toString(maquina.getdemoraImpresion());
-			data[j][4] = Integer.toString(maquina.getdisponibilidad());
-			data[j][5] = Integer.toString(maquina.getduracion());
-			data[j][6] = Integer.toString(maquina.getcantidadColores());
-			data[j][7] = Integer.toString(maquina.getmantenimiento());
-			data[j][8] = Integer.toString(maquina.getExperiencia());
-			data[j][9] = (maquina.getestado());
-			data[j][10] = Integer.toString(maquina.getMaxHojasImp());
-			data[j][11] = Integer.toString(maquina.getbeneficios());
-
+			data[j][1] = Integer.toString(maquina.getVelocidad());
+			data[j][2] = Integer.toString(maquina.getColores());
+			data[j][3] = Double.toString(maquina.getDisponibilidad());
 		}
 
-		String[] columnNames = { "terminal de Trabajo", "Costo", "Velocidad", "demora Impresion", "disponibilidad", "duracion",
-				"cantidadColores", "mantenimiento", "Experiencia", "Estado","Max Cant" , "beneficios"};
+		String[] columnNames = { "Terminal de trabajo", "Velocidad","Colores", "Disponibilidad"};
 
 		// se crea la Tabla
 		textArea= new JTextArea(7,50);
 		textArea.setEditable(false);
 		table = new JTable(data, columnNames);
 
-		table.setPreferredScrollableViewportSize(new Dimension(535, 250));
+		table.setPreferredScrollableViewportSize(new Dimension(1100, 250));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(220);
-		table.getColumnModel().getColumn(10).setPreferredWidth(150);
-		for (int k = 1; k < 12; k++)
-			table.getColumnModel().getColumn(k).setPreferredWidth(40);
+		for (int k = 1; k < 4; k++)
+			table.getColumnModel().getColumn(k).setPreferredWidth(100);
 
 		// Creamos un JscrollPane y le agregamos la JTable
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -108,7 +90,6 @@ public class Main {
 		mainFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		mainFrame.getContentPane().add(scrollPane2,BorderLayout.SOUTH);
 		mainFrame.pack();
-	
 		fileMenu.add(openMenuItem);
 		openMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -169,22 +150,16 @@ public class Main {
 			for (int k = 0; k < lim; k++) {
 			maquina = new Maquina
 			(k,(String) table.getModel().getValueAt(k, 0), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 1))), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 2))), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 3))), (Integer.parseInt((String)
-					table.getModel().getValueAt(k, 4))), (Integer.parseInt((String)
-					table.getModel().getValueAt(k, 5))), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 6))), (Integer.parseInt((String) 
 					table.getModel().getValueAt(k, 7))), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 8))), (Integer.parseInt((String)
+					table.getModel().getValueAt(k, 8))), (Double.parseDouble((String)
 					table.getModel().getValueAt(k, 9))));
 			maquinas.add(maquina);
 			ksession.insert(maquina);
 			}
 
-			PosicionPosible pp;
-			for (int i = 0; i < 12; i++) {
-				pp = new PosicionPosible(i, "Maquina");
+			Trabajo pp;
+			for (int i = 0; i < 1; i++) {
+				pp = new Trabajo(1,10000,4);
 				ksession.insert(pp);
 			}
 			ksession.insert(this);
@@ -204,7 +179,6 @@ public class Main {
 	private void updatePosicion() {
 		for (int i = 0 ; i< maquinas.size();i++){
 			//System.out.println("Final ("+maquinas.get(0).getNombre()+")-> posicion: " + maquinas.get(0).getPosicion());
-			data[i][12] = maquinas.get(i).getestado();
 			table.updateUI();		
 		}
 	}
@@ -232,45 +206,24 @@ public class Main {
 	private ArrayList<Maquina> fillArray() {
 		System.out.println("Cargando Archivo..\n");
 	    
-	    try {
-	    	BufferedReader input =  new BufferedReader(new FileReader(new File("C:\\Documents and Settings\\Administrador\\Escritorio\\eclipse\\workspace\\tpfallas\\src\\a.txt")));
-	      try {
-	        String line = null; 
-	        while (( line = input.readLine()) != null){
-	        	System.out.println(line);
-	        }
-	      }
-	      finally {
-	        input.close();
-	      }
-	    }
-	    catch (IOException ex){
-	      ex.printStackTrace();
-	    }
-	    
-		// ACA PONER NOMBRES DE MAQUINAS!!!!!
 		ArrayList<Maquina> maquinas = new ArrayList<Maquina>();
-		Maquina Maquina = new Maquina(1, "Maquina Sebastian", 6, 5, 2, 5, 7, 6, 2,4,1000);
+		Maquina Maquina = new Maquina(1, "Heidelberg SS5067", 8, 6, 1);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(2, "Maquina Nacho", 9, 6, 4, 10, 3, 5, 6, 2,200);
+		Maquina = new Maquina(2, "Cabrenta 170", 9, 2, 0.4);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(3, "Maquina Rodolfo", 2, 5, 5, 9, 4, 5, 8, 2,1000);
+		Maquina = new Maquina(3, "Cabrenta 2100", 2, 4, 0.3);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(4, "Maquina Marcos", 4, 6, 3, 6, 5, 5, 7, 1,190);
+		Maquina = new Maquina(4, "Rolland Rollermaster 3000", 4, 4, 0.2);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(5, "Maquina Martin", 5, 4, 7, 3, 6, 6, 7, 4,178);
+		Maquina = new Maquina(5, "Heidelberg H100", 5, 2, 1);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(6, "Maquina German", 2, 6, 6, 2, 5, 4, 8, 3,270);
+		Maquina = new Maquina(6, "Heidelberg 120A", 2, 2, 1);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(7, "Maquina Roberto", 1, 7, 6, 5, 7, 6, 2,5,890);
+		Maquina = new Maquina(7, "Tyuith 235", 1, 5, 0.0);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(8, "Maquina Bonifacio", 0, 8, 7, 6, 8, 5, 5,4,350);
+		Maquina = new Maquina(8, "Rolland T650", 0, 5, 0.0);
 		maquinas.add(Maquina);
-		Maquina = new Maquina(9, "Maquina Matias", 2, 6, 4, 7, 6, 4, 6, 2,5900);
-		maquinas.add(Maquina);
-		Maquina = new Maquina(10, "Maquina Diego Armando", 4, 8, 8, 3, 7, 4, 7,3,4789);
-		maquinas.add(Maquina);
-		Maquina = new Maquina(11, "Maquina Nicolas", 0, 9, 7, 1, 6, 6, 5, 6,3850);
+		Maquina = new Maquina(9, "Heidelberg SS2210", 2, 4, 1);
 		maquinas.add(Maquina);
 		return maquinas;
 	}
