@@ -2,11 +2,12 @@
 public class Maquina {
 	private int id;
 	private String nombre;
-	private int costo;
+	private int costoPorHoja;
 	private int velocidad;
 	private double disponibilidad;
 	private int colores;
 	private boolean anulada;
+	private int tiempoDeImpresion;
 	
 	public Maquina(int id, String nombre, int velocidad, 
 			int colores,double disponibilidad) {
@@ -57,12 +58,12 @@ public class Maquina {
 		return anulada;
 	}
 
-	public void setCosto(int costo) {
-		this.costo = costo;
+	public void setCostoPorHoja(int costo) {
+		this.costoPorHoja = costo;
 	}
 
-	public int getCosto() {
-		return costo;
+	public int getCostoPorHoja() {
+		return costoPorHoja;
 	}
 
 	public void setColores(int colores) {
@@ -71,5 +72,13 @@ public class Maquina {
 
 	public int getColores() {
 		return colores;
+	}
+
+	public void setTiempoDeImpresion(int tiempoDeImpresion) {
+		this.tiempoDeImpresion = tiempoDeImpresion;
+	}
+
+	public int getTiempoDeImpresion() {
+		return tiempoDeImpresion;
 	}
 }
