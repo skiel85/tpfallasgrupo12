@@ -150,9 +150,9 @@ public class Main {
 			for (int k = 0; k < lim; k++) {
 			maquina = new Maquina
 			(k,(String) table.getModel().getValueAt(k, 0), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 7))), (Integer.parseInt((String) 
-					table.getModel().getValueAt(k, 8))), (Double.parseDouble((String)
-					table.getModel().getValueAt(k, 9))));
+					table.getModel().getValueAt(k, 1))), (Integer.parseInt((String) 
+					table.getModel().getValueAt(k, 2))), (Double.parseDouble((String)
+					table.getModel().getValueAt(k, 3))));
 			maquinas.add(maquina);
 			ksession.insert(maquina);
 			}
