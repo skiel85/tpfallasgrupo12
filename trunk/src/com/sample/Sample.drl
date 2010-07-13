@@ -1,0 +1,74 @@
+package com.sample;
+
+import com.sample.Main;
+import com.sample.Maquina;
+import com.sample.Trabajo;
+
+/** R01
+* Si la disponibilidad es menor a 5 y la velocidad menor a 3, descarto la posibilidad de utilizar la máquina.
+*/
+rule "Maquina descartada, no economizo seguro."
+	salience 35
+	when
+		$maquina : Maquina (disponibilidad < 0.5, velocidad < 3, $idMaq : id)
+	then 
+		System.out.println("La relación de disponibilidad y tiempo de impresión de la máquina " + $maquina.getNombre() + " la hacen inapropiada.");
+		$maquina.setAnulada(true);
+		//update($maquina);		
+end
+
+/** R02 
+* Si la maquina tiene disponibilidad igual a 0 la descarto para el trabajo.
+*/
+rule "Maquina no disponible"
+	salience 30
+	when
+		$maquina : Maquina (disponibilidad == 0, $idMaq : id)
+	then 
+		System.out.println("La máquina " + $maquina.getNombre() + " no está disponible.");
+		$maquina.setAnulada(true);
+end
+
+/** R03 
+* Si la maquina no tiene la cantidad de colores especificada en el trabajo la descarto
+*/
+rule "Colores insuficientes"
+	salience 25
+	when
+		$trabajo : Trabajo (colores : cantidadColores, $idTra : id)
+		$maquina : Maquina (colores < colores, $idMaq : id)
+	then 
+		System.out.println("Colores insuficientes en la máquina " + $maquina.getNombre() + ".");
+		$maquina.setAnulada(true);
+end
+
+/** R04
+* Regla de calculo de tiempo de impresion
+*/
+rule "Tiempo de impresion"
+	salience 20
+	no-loop
+	when
+		$maquina : Maquina (anulada == false, $idMaq : id)
+		$trabajo : Trabajo ($idTra : id)
+	then
+		$maquina.setTiempoDeImpresion((($maquina.getVelocidad()*$trabajo.getCantidadHojas())/$maquina.getDisponibilidad())/3600);
+		System.out.println("El tiempo de impresión con la máquina " + $maquina.getNombre() + " es de " + $maquina.getTiempoDeImpresion() + " horas");
+end
+
+/** R05
+* Regla de calculo de precio por maquina.
+*/
+rule "Precio por maquina"
+	salience 10
+	no-loop
+	when
+		$maquina : Maquina (anulada == false, $idMaq : id)
+		$trabajo : Trabajo ($idTra : id)
+	then
+	    System.out.println($maquina.getCostoPorHoja());		
+		System.out.println($trabajo.getCantidadHojas());		
+		System.out.println($maquina.getTiempoDeImpresion());
+		$maquina.setCostoPorHoja((35 * $trabajo.getCantidadHojas()) + (35*$maquina.getTiempoDeImpresion()));
+		System.out.println("El precio con la maquina " + $maquina.getNombre() + " es de $" + $maquina.getCostoPorHoja()*$trabajo.getCantidadHojas());
+end
